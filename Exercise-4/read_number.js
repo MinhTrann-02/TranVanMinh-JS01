@@ -30,4 +30,4 @@ function readNumber(num) {
     }
     return result;
 }
-console.log(readNumber(11));
+console.log(readNumber(21));
