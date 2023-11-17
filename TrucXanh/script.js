@@ -1,37 +1,78 @@
-function createTable() {
-    var table = document.getElementById("table");
-    let cell_number = 1;
+document.addEventListener("DOMContentLoaded", function () {
+    const cardIcons = ['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐯'];
+    const cardIcon_2 = [...cardIcons,...cardIcons];
+    let countCard = 1;
 
-    for (let i = 0; i < 4; i++) {
-        var row = table.insertRow(i);
-        for (var j = 0; j < 5; j++) {
-            var cell = row.insertCell(j);
-            var button = document.createElement("button");
-            button.innerText = String(cell_number);
-            button.setAttribute("onclick", "buttonClick(this)"); // check
-            cell.appendChild(button);
-            cell_number++;
+    const gameContainer = document.getElementById("game-container");
+
+    function shuffle(array) {
+        let currentIndex = array.length, randomIndex;
+
+        while (currentIndex !== 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+
+            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+        }
+
+        return array;
+    }
+
+    function createCard(icon, index) {
+        const card = document.createElement("div");
+        card.classList.add("card");
+        card.dataset.index = index;
+        //   card.innerText = countCard;
+
+        const cardFront = document.createElement("div");
+        const cardIcon = document.createElement("div");
+        cardFront.classList.add("card-front");
+        cardIcon.classList.add("card-icon");
+        cardIcon.innerHTML = cardIcon_2[index];
+
+        card.appendChild(cardFront);
+        card.appendChild(cardIcon);
+        card.addEventListener("click", flipCard);
+
+        return card;
+    }
+
+    function flipCard() {
+        this.classList.toggle("flipped");
+        checkForMatch();
+    }
+
+    function checkForMatch() {
+        const flippedCards = document.querySelectorAll(".card.flipped");
+
+
+        if (flippedCards.length == 2) {
+            const [firstCard, secondCard] = flippedCards;
+            
+
+            if (firstCard.querySelector(".card-icon").textContent === secondCard.querySelector(".card-icon").textContent) {
+                setTimeout(() => {
+                    flippedCards.forEach(card => card.classList.remove(".card"));
+                    firstCard.length = 0;
+                }, 1000);
+            } else {
+                setTimeout(() => {
+                    flippedCards.forEach(card => card.classList.remove("flipped"));
+                }, 1000);
+            }
         }
     }
-}
 
-function buttonClick(button) { // func check
-    alert("Button clicked: " + button.innerText); 
-}
+    function initGame() {
+        const shuffledImages = shuffle(cardIcon_2);
 
-function formatScores(socres) {
-    let socresString = String(socres);
-    let result = '';
-    let len_socres = socresString.length;
-    for (i = 0; i < len_socres; i++) {
-        result += socresString[i];
-        if ((len_socres - i - 1) % 3 === 0 && i !== len_socres - 1) {
-            result += ',';
-        }
+        shuffledImages.forEach((icon, index) => {
+            const card = createCard(icon, index);
+
+            countCard++;
+            gameContainer.appendChild(card);
+        });
     }
-    return result;
-}
 
-document.addEventListener('DOMContentLoaded', function () {
-    createTable();
+    initGame();
 });

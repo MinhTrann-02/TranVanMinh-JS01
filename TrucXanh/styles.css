@@ -2,33 +2,31 @@ body {
     background-color: #7bc212;
 }
 
-.scores, button {
-    font-weight: bold;
-    font-size: 30px;
-    font-family: Arial, Helvetica, sans-serif;
+#game-container {
+    display: grid;
+    grid-template-columns: repeat(4, 100px);
+    gap: 3%;
+    margin: 20px;
 }
 
-.scores {
-    color: saddlebrown;
-    padding: 10px;
-}
-
-
-table {
-    border-spacing: 10px;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    height: 90vh;
-}
-
-button {
+.card {
     width: 120px;
     height: 120px;
     background-color: orange;
-    border: 2px solid #000;
-    border-radius: 15%;
-    text-align: center;
-    color: white;
-    transform-origin: top center;
+    border: 2px solid black;
+    border-radius: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.card.flipped {
+    background-color: white;
+    z-index: -1;
+}
+
+.card-icon {
+    z-index: -1;
 }
